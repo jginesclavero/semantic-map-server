@@ -41,7 +41,7 @@ void SemanticMapServer::loadMap(int height, int width) {
   for (int i = height-1; i >= 0; i--) {
     for (int j = 0; j<width; j++) {
       if (fgets(line, kMaxLineLen, file)) {
-        cell_cost = 254 - atoi(line);
+        cell_cost = atoi(line) + 1;
         if (cell_cost < 0 || cell_cost == 255)
           cell_cost = 254;
         semantic_costmap_.setCost(j, i, cell_cost);
