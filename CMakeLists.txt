@@ -12,6 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   roslib
   roslint
+  tf2_geometry_msgs
+  tf2
+  tf2_ros
 )
 
 roslint_cpp()
@@ -41,9 +44,14 @@ add_executable(semantic_map_server_node src/semantic_map_server_node.cpp)
 add_dependencies(semantic_map_server_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(semantic_map_server_node ${catkin_LIBRARIES})
 
+add_executable(semantic_watcher_node src/semantic_watcher_node.cpp)
+add_dependencies(semantic_watcher_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(semantic_watcher_node ${catkin_LIBRARIES})
+
 ## Mark executables and/or libraries for installation
 install(TARGETS
   semantic_map_server_node
+  semantic_watcher_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

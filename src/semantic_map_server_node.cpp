@@ -32,9 +32,9 @@
 *   POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-/* Author: Jonathan Ginés jgines@gsyc.urjc.es */
+/* Author: Jonathan Ginés jonatan.gines@urjc.es */
 
-#include <semantic_map_server/semantic_map_server_node.h>
+#include "semantic_map_server/semantic_map_server_node.h"
 
 SemanticMapServer::SemanticMapServer()
   : nh_("~"),
@@ -87,7 +87,7 @@ void SemanticMapServer::loadMap(int height, int width)
   FILE* file = fopen(map_file_.c_str(), "r");
   if (!file)
   {
-    ROS_ERROR("Couldn't load semanftic map file to %s", map_file_.c_str());
+    ROS_ERROR("Couldn't load semantic map file to %s", map_file_.c_str());
     return;
   }
   removeHeaders(file);
