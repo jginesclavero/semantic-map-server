@@ -44,7 +44,7 @@ SemanticMapServer::SemanticMapServer()
     metadata_msg_(),
     values_()
     {
-  metadata_pub_ = nh_.advertise<semantic_map_server::SemanticMapMetaData>(
+  metadata_pub_ = nh_.advertise<semantic_map_server_msgs::SemanticMapMetaData>(
     "/semantic_map_metadata", 1, true);
   loadParameters();
   loadMap(height_, width_);

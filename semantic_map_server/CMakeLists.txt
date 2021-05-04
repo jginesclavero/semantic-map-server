@@ -6,7 +6,6 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
-  message_generation
   costmap_2d
   geometry_msgs
   genmsg
@@ -15,23 +14,14 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_geometry_msgs
   tf2
   tf2_ros
+  semantic_map_server_msgs
 )
 
 roslint_cpp()
 
-add_message_files(
-  FILES
-  SemanticMapMetaData.msg
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
-
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp std_msgs message_runtime roslib
+  CATKIN_DEPENDS roscpp std_msgs semantic_map_server_msgs roslib
 
 )
 

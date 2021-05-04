@@ -53,7 +53,7 @@ void SemanticWatcher::mapCb(const nav_msgs::OccupancyGrid::ConstPtr& map) {
 }
 
 void SemanticWatcher::metadataCallback(
-	const semantic_map_server::SemanticMapMetaData::ConstPtr& metadata) 
+	const semantic_map_server_msgs::SemanticMapMetaData::ConstPtr& metadata) 
 {
 	rooms_ = metadata->rooms;
 	for (int i = 0; i < rooms_.size(); i++)

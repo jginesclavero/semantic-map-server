@@ -32,46 +32,56 @@
 *   POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-/* Author: Jonathan Ginés jgines@gsyc.urjc.es */
+/* Author: Jonathan Ginés jonatan.gines@urjc.es */
 
-#ifndef SEMANTIC_MAP_SERVER_SEMANTIC_MAP_SERVER_NODE_H
-#define SEMANTIC_MAP_SERVER_SEMANTIC_MAP_SERVER_NODE_H
+#ifndef SEMANTIC_MAP_SERVER_SEMANTIC_WATCHER_NODE_H
+#define SEMANTIC_MAP_SERVER_SEMANTIC_WATCHER_NODE_H
 
 #include <ros/ros.h>
 #include <string>
 #include "std_msgs/String.h"
 #include <sstream>
-#include <vector>
 #include <math.h>
 #include <iostream>
 #include <costmap_2d/costmap_2d.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d_publisher.h>
 #include <nav_msgs/OccupancyGrid.h>
-#include "nav_msgs/MapMetaData.h"
-#include <semantic_map_server/SemanticMapMetaData.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <geometry_msgs/PoseStamped.h>
 
-class SemanticMapServer
-{
-public:
-  SemanticMapServer();
+#include "tf2/transform_datatypes.h"
+#include "tf2_ros/transform_listener.h"
+#include "tf2/LinearMath/Transform.h"
+#include "geometry_msgs/TransformStamped.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include "tf2/convert.h"
+
+#include <semantic_map_server_msgs/SemanticMapMetaData.h>
+
+class SemanticWatcher {
+	public:
+	SemanticWatcher();
+	void step();
+  void mapCb(const nav_msgs::OccupancyGrid::ConstPtr& map);
+	void metadataCallback(
+	const semantic_map_server_msgs::SemanticMapMetaData::ConstPtr& map);
 
 private:
   ros::NodeHandle nh_;
-  costmap_2d::Costmap2D semantic_costmap_;
-  costmap_2d::Costmap2DPublisher costmap_pub_;
-  ros::Publisher metadata_pub_;
-  std::string map_file_;
-  int height_, width_;
-  float resolution_, origin_x_, origin_y_;
+  ros::Subscriber map_sub_,metadata_sub_;
+  ros::Publisher robot_location_pub_;
+  costmap_2d::Costmap2D costmap_;
   std::vector<std::string> rooms_;
-  std::vector<int> values_;
-  semantic_map_server::SemanticMapMetaData metadata_msg_;
+  std::map<int, std::string> semantic_values_;
+  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
+  bool map_ready_, metadata_ready_;
 
-  void loadParameters();
-  void loadMap(int height, int width);
-  void initSemanticMap();
-  void removeHeaders(FILE* &file);
+  bool getRobotTF(geometry_msgs::TransformStamped& map2robot_msg);
+  std::string getRobotLocation(geometry_msgs::TransformStamped map2robot_msg);
+	void grid2CostMap(nav_msgs::OccupancyGrid map, costmap_2d::Costmap2D& cost_map);
 };
 
-#endif /* SEMANTIC_MAP_SERVER_SEMANTIC_MAP_SERVER_NODE_H */
+#endif /* SEMANTICWATCHERNODE_H_ */
